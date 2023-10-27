@@ -23,6 +23,16 @@ const adminController = {
         res.redirect('/admin/items')
       })
       .catch(err => next(err))
+  },
+  getItem: (req, res, next) => {
+    Item.findByPk(req.params.id, {
+      raw: true
+    })
+      .then(item => {
+        if (!item) throw new Error("Item didn't exist")
+        res.render('admin/item', { item })
+      })
+      .catch(err => next(err))
   }
 }
 module.exports = adminController
