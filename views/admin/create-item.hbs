@@ -2,18 +2,6 @@
   <div class="mb-4 text-center">
     <h3>Create item</h1>
   </div>
-  <div class="form-row mb-3">
-    <label class="form-label" for="name">Name</label>
-    <input class="form-control" type="text" id="name" name="name" placeholder="Enter name" required> 
-  </div>
-  <div class="form-row mb-3">
-    <label class="form-label" for="price">Price</label>
-    <input class="form-control" type="text" id="price" name="price" placeholder="Enter price">
-  </div>
-  <div class="form-row mb-3">
-    <label class="form-label" for="description">Description</label>
-    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+{{> admin-item-form}}
 </form>
 
