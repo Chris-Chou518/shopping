@@ -1,4 +1,4 @@
-const { Item } = require('../models')
+const { Item, User } = require('../models')
 const { localFileHandler } = require('../helpers/file-helpers')
 const adminController = {
   getItems: (req, res, next) => {
@@ -81,6 +81,33 @@ const adminController = {
       })
       .then(() => {
         res.redirect('/admin/items')
+      })
+      .catch(err => next(err))
+  },
+  getUsers: (req, res, next) => {
+    return User.findAll({
+      raw: true
+    })
+      .then(users => {
+        return res.render('admin/user-auth', { users })
+      })
+      .catch(err => next(err))
+  },
+  patchUser: (req, res, next) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        if (!user) throw new Error('This user does not exist!')
+        if (user.email === 'root@example.com') {
+          req.flash('error_messages', '禁止變更管理員權限')
+          return res.redirect('back')
+        }
+        return user.update({
+          isAdmin: !user.isAdmin
+        })
+      })
+      .then(() => {
+        req.flash('success_messages', '使用者權限變更成功')
+        res.redirect('/admin/users')
       })
       .catch(err => next(err))
   }

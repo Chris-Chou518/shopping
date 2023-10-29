@@ -9,5 +9,7 @@ router.delete('/items/:id', adminController.deleteItem)
 router.get('/items/:id', adminController.getItem)
 router.post('/items', upload.single('image'), adminController.postItem)
 router.get('/items', adminController.getItems)
+router.get('/users', adminController.getUsers)
+router.patch('/users/:id', adminController.patchUser)
 router.use('/', (req, res) => res.redirect('/admin/items'))
 module.exports = router
