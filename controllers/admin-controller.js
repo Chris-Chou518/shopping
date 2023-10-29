@@ -1,9 +1,11 @@
-const { Item, User } = require('../models')
+const { Item, User, Category } = require('../models')
 const { localFileHandler } = require('../helpers/file-helpers')
 const adminController = {
   getItems: (req, res, next) => {
     Item.findAll({
-      raw: true
+      raw: true,
+      nest: true,
+      include: [Category]
     })
       .then(items => res.render('admin/items', { items }))
       .catch(err => next(err))
@@ -32,7 +34,9 @@ const adminController = {
   },
   getItem: (req, res, next) => {
     Item.findByPk(req.params.id, {
-      raw: true
+      raw: true,
+      nest: true,
+      include: [Category]
     })
       .then(item => {
         if (!item) throw new Error("Item didn't exist")
