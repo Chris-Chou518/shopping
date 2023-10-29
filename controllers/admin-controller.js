@@ -1,4 +1,5 @@
 const { Item } = require('../models')
+const { localFileHandler } = require('../helpers/file-helpers')
 const adminController = {
   getItems: (req, res, next) => {
     Item.findAll({
@@ -13,11 +14,16 @@ const adminController = {
   postItem: (req, res, next) => {
     const { name, description, price } = req.body
     if (!name) throw new Error('Item name is required')
-    Item.create({
-      name,
-      description,
-      price
-    })
+    const file = req.file
+    localFileHandler(file)
+      .then(filePath => {
+        return Item.create({
+          name,
+          description,
+          price,
+          image: filePath || null
+        })
+      })
       .then(() => {
         req.flash('success_messages', 'Item was successfully created!')
         res.redirect('/admin/items')
@@ -47,13 +53,18 @@ const adminController = {
   putItem: (req, res, next) => {
     const { name, price, description } = req.body
     if (!name) throw new Error('Item name is required!')
-    Item.findByPk(req.params.id)
-      .then(item => {
+    const { file } = req
+    Promise.all([
+      Item.findByPk(req.params.id),
+      localFileHandler(file)
+    ])
+      .then(([item, filePath]) => {
         if (!item) return new Error("Item didn't exist")
         return item.update({
           name,
           price,
-          description
+          description,
+          image: filePath || item.image
         })
       })
       .then(item => {
