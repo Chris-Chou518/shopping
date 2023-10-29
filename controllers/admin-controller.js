@@ -10,11 +10,15 @@ const adminController = {
       .then(items => res.render('admin/items', { items }))
       .catch(err => next(err))
   },
-  createItem: (req, res) => {
-    return res.render('admin/create-item')
+  createItem: (req, res, next) => {
+    return Category.findAll({
+      raw: true
+    })
+      .then(categories => res.render('admin/create-item', { categories }))
+      .catch(err => next(err))
   },
   postItem: (req, res, next) => {
-    const { name, description, price } = req.body
+    const { name, description, price, categoryId } = req.body
     if (!name) throw new Error('Item name is required')
     const file = req.file
     localFileHandler(file)
@@ -23,7 +27,8 @@ const adminController = {
           name,
           description,
           price,
-          image: filePath || null
+          image: filePath || null,
+          categoryId
         })
       })
       .then(() => {
@@ -45,17 +50,18 @@ const adminController = {
       .catch(err => next(err))
   },
   editItem: (req, res, next) => {
-    Item.findByPk(req.params.id, {
-      raw: true
-    })
-      .then(item => {
+    return Promise.all([
+      Item.findByPk(req.params.id, { raw: true }),
+      Category.findAll({ raw: true })
+    ])
+      .then(([item, categories]) => {
         if (!item) return new Error("Item didn't exist")
-        res.render('admin/edit-item', { item })
+        res.render('admin/edit-item', { item, categories })
       })
       .catch(err => next(err))
   },
   putItem: (req, res, next) => {
-    const { name, price, description } = req.body
+    const { name, price, description, categoryId } = req.body
     if (!name) throw new Error('Item name is required!')
     const { file } = req
     Promise.all([
@@ -68,7 +74,8 @@ const adminController = {
           name,
           price,
           description,
-          image: filePath || item.image
+          image: filePath || item.image,
+          categoryId
         })
       })
       .then(item => {
