@@ -1,11 +1,12 @@
 const { Category } = require('../models')
 const categoryController = {
   getCategories: (req, res, next) => {
-    return Category.findAll({
-      raw: true
-    })
-      .then(categories => {
-        return res.render('admin/categories', { categories })
+    return Promise.all([
+      Category.findAll({ raw: true }),
+      req.params.id ? Category.findByPk(req.params.id, { raw: true }) : null
+    ])
+      .then(([categories, category]) => {
+        return res.render('admin/categories', { categories, category })
       })
       .catch(err => next(err))
   },
@@ -15,6 +16,17 @@ const categoryController = {
     return Category.create({
       name
     })
+      .then(() => res.redirect('/admin/categories'))
+      .catch(err => next(err))
+  },
+  putCategory: (req, res, next) => {
+    const { name } = req.body
+    return Category.findByPk(req.params.id)
+      .then(category => {
+        return category.update({
+          name
+        })
+      })
       .then(() => res.redirect('/admin/categories'))
       .catch(err => next(err))
   }
