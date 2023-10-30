@@ -1,0 +1,31 @@
+{{> admin-tab-switch route='categories'}}
+<br />
+<br />
+<table class="table align-middle">
+  <thead class="table-warning thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">#</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each categories}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.name}}</td>
+        <td>
+          <button class="btn btn-light text-primary" type="button">
+            <a href="/admin/categories/{{this.id}}">Edit</a>
+          </button>
+        </td>
+        <td>
+          <form action="/admin/categories/{{this.id}}?_method=delete" method="post">
+            <button class="btn btn-light text-primary" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

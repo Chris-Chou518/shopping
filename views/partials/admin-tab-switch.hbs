@@ -1,9 +1,12 @@
 <h1>賣場後台</h1>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="btn btn-light nav-link text-primary active" aria-current="page" href="/admin/items">Items</a>
+    <a class="nav-link {{#ifCond route 'items'}}active{{/ifCond}}" href="/admin/items">Items</a>
   </li>
   <li class="nav-item">
-    <a class="btn btn-light nav-link text-primary active" aria-current="page" href="/admin/users">Users</a>
+    <a class="nav-link {{#ifCond route 'categories'}}active{{/ifCond}}" href="/admin/categories">Category</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{#ifCond route 'users'}}active{{/ifCond}}" href="/admin/users">Users</a>
   </li>
 </ul>
