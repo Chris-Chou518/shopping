@@ -44,7 +44,7 @@
         </td>
         <td>
           <form action="/admin/categories/{{this.id}}?_method=delete" method="post">
-            <button class="btn btn-light text-danger" type="submit">Delete</button>
+            <button class="btn btn-light text-danger" type="submit" onclick="return confirm(`確定要刪除 {{ this.name }} 嗎？`)">Delete</button>
           </form>
         </td>
       </tr>
