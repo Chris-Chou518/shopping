@@ -13,5 +13,6 @@ router.get('/items', adminController.getItems)
 router.get('/users', adminController.getUsers)
 router.patch('/users/:id', adminController.patchUser)
 router.get('/categories', categoryController.getCategories)
+router.post('/categories', categoryController.postCategory)
 router.use('/', (req, res) => res.redirect('/admin/items'))
 module.exports = router

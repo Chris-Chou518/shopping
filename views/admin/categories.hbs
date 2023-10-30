@@ -1,6 +1,16 @@
 {{> admin-tab-switch route='categories'}}
-<br />
-<br />
+<div class="pt-3 pb-3 my-3">
+  <form class="row" action="/admin/categories" method="post">
+    <div class="col-auto">
+      <input class="form-control" type="text" placeholder="Category Name" name="name">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-success" type="submit">
+        Create
+      </button>
+    </div>
+  </form>
+</div>
 <table class="table align-middle">
   <thead class="table-warning thead-dark">
     <tr>
@@ -22,7 +32,7 @@
         </td>
         <td>
           <form action="/admin/categories/{{this.id}}?_method=delete" method="post">
-            <button class="btn btn-light text-primary" type="submit">Delete</button>
+            <button class="btn btn-light text-danger" type="submit">Delete</button>
           </form>
         </td>
       </tr>
