@@ -17,13 +17,28 @@ const itemController = {
   },
   getItem: (req, res, next) => {
     return Item.findByPk(req.params.id, {
-      raw: true,
       nest: true,
       include: [Category]
     })
       .then(item => {
         if (!item) throw new Error('Item does not exist!')
-        return res.render('item', { item })
+        return item.increment('viewCounts', { by: 1 })
+      })
+      .then(item => {
+        return res.render('item', {
+          item: item.toJSON()
+        })
+      })
+      .catch(err => next(err))
+  },
+  getDashboard: (req, res, next) => {
+    return Item.findByPk(req.params.id, {
+      raw: true,
+      nest: true,
+      include: [Category]
+    })
+      .then(item => {
+        res.render('dashboard', { item })
       })
       .catch(err => next(err))
   }
