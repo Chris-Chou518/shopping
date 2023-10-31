@@ -1,17 +1,28 @@
 const { Item, Category } = require('../models')
 const itemController = {
   getItems: (req, res, next) => {
-    return Item.findAll({
-      raw: true,
-      nest: true,
-      include: [Category]
-    })
-      .then(items => {
+    const categoryId = Number(req.query.categoryId) || ''
+    return Promise.all([
+      Item.findAll({
+        raw: true,
+        nest: true,
+        include: [Category],
+        where: {
+          ...categoryId ? { categoryId: categoryId } : {}
+        }
+      }),
+      Category.findAll({ raw: true })
+    ])
+      .then(([items, categories]) => {
         const data = items.map(r => ({
           ...r,
           description: r.description.substring(0, 50)
         }))
-        return res.render('items', { items: data })
+        return res.render('items', {
+          items: data,
+          categories,
+          categoryId
+        })
       })
       .catch(err => next(err))
   },
