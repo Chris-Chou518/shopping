@@ -14,4 +14,13 @@
   </div>
 </div>
 <hr>
-<a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
+{{!-- comment --}}
+<form action="/comments" method="post">
+  <div class="form-row mb-3">
+    <label class="form-label" for="text">留下評論:</label>
+    <textarea class="form-control" name="text" id="text" rows="3"></textarea>
+  </div>
+  <input type="hidden" name="itemId" value="{{item.id}}">
+  <button class="btn btn-primary" type="submit">Submit</button>  
+  <a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
+</form>
