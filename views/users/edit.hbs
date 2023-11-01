@@ -1,0 +1,16 @@
+<div class="mb-4">
+  <h1 class="h3 font-weight-normal mb-3">Edit user profile</h1>
+</div>
+<hr>
+<form action="/users/{{user.id}}?_method=put" method="post" enctype="multipart/form-data">
+  <div class="form-row mb-3 col-lg-3">
+    <label class="form-label" for="name">Name: </label>
+    <input class="form-control" type="text" id="name" name="name" value="{{user.name}}">
+  </div>
+  <div class="form-row col-lg-3">
+    <label class="form-label" for="image">Image</label>
+    <input class="form-control-file" type="file" id="image" name="image">
+  </div>
+  <button class="btn btn-outline-success mt-5" type="submit">Submit</button>
+  <a class="btn btn-outline-secondary mt-5 mx-3" href="javascript:history.back()">Back</a>
+</form>

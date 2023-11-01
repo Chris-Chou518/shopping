@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const { User } = require('../models')
+const { localFileHandler } = require('../helpers/file-helpers')
 const userController = {
   signUpPage: (req, res) => {
     return res.render('signup')
@@ -38,6 +39,38 @@ const userController = {
     req.flash('success_messages', '成功登出')
     req.logout()
     res.redirect('/signin')
+  },
+  getUser: (req, res, next) => {
+    return User.findByPk(req.params.id, {
+      raw: true
+    })
+      .then(someone => {
+        if (!someone) throw new Error('User does not exist!')
+        return res.render('users/profile', { someone })
+      })
+      .catch(err => next(err))
+  },
+  editUser: (req, res, next) => {
+    return res.render('users/edit')
+  },
+  putUser: (req, res, next) => {
+    const { name } = req.body
+    if (!name) throw new Error('User name is required!')
+    const file = req.file
+    return Promise.all([
+      User.findByPk(req.user.id),
+      localFileHandler(file)
+    ])
+      .then(([user, filePath]) => {
+        return user.update({
+          name,
+          image: filePath || user.image
+        })
+      })
+      .then(() => {
+        return res.redirect(`/users/${req.user.id}`)
+      })
+      .catch(err => next(err))
   }
 }
 module.exports = userController
