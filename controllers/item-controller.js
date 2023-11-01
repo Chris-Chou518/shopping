@@ -1,4 +1,4 @@
-const { Item, Category } = require('../models')
+const { Item, Category, User, Comment } = require('../models')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
 const itemController = {
   getItems: (req, res, next) => {
@@ -37,7 +37,10 @@ const itemController = {
   getItem: (req, res, next) => {
     return Item.findByPk(req.params.id, {
       nest: true,
-      include: [Category]
+      include: [
+        Category,
+        { model: Comment, include: User }
+      ]
     })
       .then(item => {
         if (!item) throw new Error('Item does not exist!')

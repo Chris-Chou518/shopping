@@ -1,6 +1,6 @@
 const { Comment, User, Item } = require('../models')
 const commentController = {
-  postComments: (req, res, next) => {
+  postComment: (req, res, next) => {
     const { text, itemId } = req.body
     const userId = req.user.id
     if (!text) throw new Error('Comment is required!')
