@@ -17,6 +17,7 @@ router.get('/items/:id/dashboard', itemController.getDashboard)
 router.get('/items/:id', authenticated, itemController.getItem)
 router.get('/items', authenticated, itemController.getItems)
 router.post('/comments', authenticated, commentController.postComment)
+router.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 router.use('/', (req, res) => res.redirect('/items'))
 router.use('/', generalErrorHandler)
 module.exports = router
