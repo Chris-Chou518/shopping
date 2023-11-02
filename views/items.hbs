@@ -20,11 +20,14 @@
       </div>
       <div class="card-body">
         <p class="card-text">
-          <a href="/items/:id">
+          <a class="text-body-secondary" href="/items/:id">
             {{this.name}}
           </a>
-          <span class="badge bg-secondary">{{this.Category.name}}</span>
+          <span class="float-end">NT$: {{this.price}}</span>
           <p class="card-text text-truncate">{{this.description}}</p>
+          <a href="/items/{{this.id}}">
+            <div class="float-end badge text-light bg-secondary px-3">立即購買</div>
+          </a>
         </p>
       </div>
     </div>

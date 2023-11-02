@@ -55,12 +55,15 @@ const itemController = {
   },
   getDashboard: (req, res, next) => {
     return Item.findByPk(req.params.id, {
-      raw: true,
-      nest: true,
-      include: [Category]
+      // raw: true,
+      // nest: true,
+      include: [
+        Category,
+        { model: Comment }
+      ]
     })
       .then(item => {
-        res.render('dashboard', { item })
+        res.render('dashboard', { item: item.toJSON() })
       })
       .catch(err => next(err))
   }
