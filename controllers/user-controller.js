@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-const { User, Comment, Item } = require('../models')
+const { User, Comment, Item, Favorite } = require('../models')
 const { localFileHandler } = require('../helpers/file-helpers')
 const userController = {
   signUpPage: (req, res) => {
@@ -78,6 +78,41 @@ const userController = {
       .then(() => {
         return res.redirect(`/users/${req.user.id}`)
       })
+      .catch(err => next(err))
+  },
+  addFavorite: (req, res, next) => {
+    return Promise.all([
+      Item.findByPk(req.params.itemId),
+      Favorite.findOne({
+        where: {
+          userId: req.user.id,
+          itemId: req.params.itemId
+        }
+      })
+    ])
+      .then(([item, favorite]) => {
+        if (!item) throw new Error('無此商品！')
+        if (favorite) throw new Error('您已收藏此商品！')
+        return Favorite.create({
+          userId: req.user.id,
+          itemId: req.params.itemId
+        })
+      })
+      .then(() => res.redirect('back'))
+      .catch(err => next(err))
+  },
+  removeFavorite: (req, res, next) => {
+    return Favorite.findOne({
+      where: {
+        userId: req.user.id,
+        itemId: req.params.itemId
+      }
+    })
+      .then(favorite => {
+        if (!favorite) throw new Error('您原本就無收藏此商品！')
+        return favorite.destroy()
+      })
+      .then(() => res.redirect('back'))
       .catch(err => next(err))
   }
 }
