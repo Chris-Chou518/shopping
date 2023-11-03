@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Item.belongsTo(models.Category, { foreignKey: 'categoryId' })
       Item.hasMany(models.Comment, { foreignKey: 'itemId' })
+      Item.belongsToMany(models.User, {
+        through: models.Favorite,
+        foreignKey: 'itemId',
+        as: 'FavoritedUsers'
+      })
     }
   }
   Item.init({
