@@ -66,6 +66,34 @@ const itemController = {
         res.render('dashboard', { item: item.toJSON() })
       })
       .catch(err => next(err))
+  },
+  getFeeds: (req, res, next) => {
+    return Promise.all([
+      Item.findAll({
+        limit: 10,
+        order: [['createdAt', 'DESC']],
+        include: [Category],
+        raw: true,
+        nest: true
+      }),
+      Comment.findAll({
+        limit: 10,
+        order: [['createdAt', 'DESC']],
+        include: [User, Item],
+        raw: true,
+        nest: true
+      })
+    ])
+      .then(([items, comments]) => {
+        const data = items.map(item => ({
+          ...item,
+          description: item.description.substring(0, 50)
+        }))
+        res.render('feeds', {
+          items: data,
+          comments
+        })
+      })
   }
 }
 module.exports = itemController

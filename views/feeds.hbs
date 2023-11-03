@@ -1,0 +1,43 @@
+{{> item-tabs route='feeds'}}
+<h1>最新動態</h1>
+<hr />
+<div class="row mt-5">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        最新商品
+      </div>
+      <div class="card-body">
+        {{#each items}}
+          <div>
+            <h4>
+              <a class="link-primary" href="/items/{{this.id}}">{{this.name}}</a>
+              <small class="fs-6">[{{this.Category.name}}]</small>
+              <p class="my-4">{{this.description}}</p>
+            </h4>
+            {{relativeTimeFromNow this.createdAt}}
+            <hr>
+          </div>    
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        最新評論
+      </div>
+      <div class="card-body">
+        {{#each comments}}
+          <h4>
+            <a class="link-primary" href="/items/{{this.itemId}}">{{this.Item.name}}</a>
+          </h4>
+          <p class="my-4">{{this.text}}</p>
+          - <a class="text-danger-emphasis" href="/users/{{this.userId}}">{{this.User.name}}</a>
+          <small>at {{relativeTimeFromNow createdAt}}</small>
+          <hr>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
