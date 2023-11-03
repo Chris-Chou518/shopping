@@ -28,12 +28,15 @@
           <p class="card-text text-truncate">{{this.description}}</p>
           <div class="row">
             <div class="d-flex col-md-6">
-              <form action="/favorite/{{this.id}}?_method=delete" method="post">
-                <button style="border: none; background: none; color: red;" type="submit">&hearts;</button>
-              </form>
-              <form action="/favorite/{{this.id}}" method="post">
-                <button style="border: none; background: none;" type="submit">&hearts;</button>
-              </form>
+              {{#if isFavorited}}
+                <form action="/favorite/{{this.id}}?_method=delete" method="post">
+                  <button style="border: none; background: none; color: red;" type="submit">&hearts;</button>
+                </form>
+              {{else}}
+                <form action="/favorite/{{this.id}}" method="post">
+                  <button style="border: none; background: none;" type="submit">&hearts;</button>
+                </form>
+              {{/if}}
             </div>
             <div class="col-md-6">
               <a href="/items/{{this.id}}">

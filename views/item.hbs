@@ -10,6 +10,15 @@
   <div class="col-md-8">
     <p>{{item.description}}</p>
     <hr>
+    {{#if isFavorited}}
+    <form action="/favorite/{{item.id}}?_method=delete" method="post" style="display: contents;">
+      <button style="border: none; background: none; color: red;" type="submit">&hearts;</button>
+    </form>
+    {{else}}
+    <form action="/favorite/{{item.id}}" method="post" style="display: contents;">
+      <button style="border: none; background: none;" type="submit">&hearts;</button>
+    </form>
+    {{/if}}
     <a class="btn btn-outline-info" href="/items/{{item.id}}/dashboard">Dashboard</a>
   </div>
 </div>

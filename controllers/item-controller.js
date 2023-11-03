@@ -21,9 +21,11 @@ const itemController = {
       Category.findAll({ raw: true })
     ])
       .then(([items, categories]) => {
+        const FavoritedItemsId = req.user.FavoritedItems.map(fi => fi.id)
         const data = items.rows.map(r => ({
           ...r,
-          description: r.description.substring(0, 50)
+          description: r.description.substring(0, 50),
+          isFavorited: FavoritedItemsId.includes(r.id)
         }))
         return res.render('items', {
           items: data,
@@ -39,7 +41,8 @@ const itemController = {
       nest: true,
       include: [
         Category,
-        { model: Comment, include: User }
+        { model: Comment, include: User },
+        { model: User, as: 'FavoritedUsers' }
       ]
     })
       .then(item => {
@@ -47,8 +50,10 @@ const itemController = {
         return item.increment('viewCounts', { by: 1 })
       })
       .then(item => {
+        const isFavorited = item.FavoritedUsers.some(fu => fu.id === req.user.id)
         return res.render('item', {
-          item: item.toJSON()
+          item: item.toJSON(),
+          isFavorited
         })
       })
       .catch(err => next(err))
