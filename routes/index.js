@@ -26,6 +26,8 @@ router.get('/users/:id/edit', authenticated, userController.editUser)
 router.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 router.post('/favorite/:itemId', authenticated, userController.addFavorite)
 router.delete('/favorite/:itemId', authenticated, userController.removeFavorite)
+router.post('/following/:userId', authenticated, userController.addFollowing)
+router.delete('/following/:userId', authenticated, userController.removeFollowing)
 router.use('/', (req, res) => res.redirect('/items'))
 router.use('/', generalErrorHandler)
 module.exports = router
