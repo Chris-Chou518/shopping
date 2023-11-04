@@ -1,0 +1,30 @@
+{{> item-tabs route='topUsers'}}
+<h1>購物達人</h1>
+<hr>
+<div class="row" style="text-align: center;">
+  {{#each users}}
+    <div class="col-3">
+      <a href="/users/{{this.id}}">
+        {{#if this.image}}
+          <img src="{{this.image}}" alt="image" width="170px" height="140px" >
+        {{else}}
+          <img src="https://fakeimg.pl/140/" width="170px" height="140px">
+        {{/if}}
+      </a>
+      <h2>{{this.name}}</h2>
+      <span class="bg-secondary badge">追蹤人數: {{this.followerCount}}</span>
+      <p>
+        {{#if this.isFollowed}}
+        <form action="/following/{{this.id}}?_method=delete" method="post" style="display: contents;">
+          <button class="btn btn-danger" type="submit">取消追蹤</button>
+        </form>
+        {{else}}
+        <form action="/following/{{this.id}}" method="post" style="display: contents;">
+          <button class="btn btn-primary" type="submit">追蹤</button>
+        </form>
+        {{/if}}
+      </p>
+      
+    </div>
+  {{/each}}
+</div>
