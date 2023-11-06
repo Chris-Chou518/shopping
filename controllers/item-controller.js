@@ -38,7 +38,7 @@ const itemController = {
   },
   getItem: (req, res, next) => {
     return Item.findByPk(req.params.id, {
-      nest: true,
+      // nest: true,
       include: [
         Category,
         { model: Comment, include: User },
@@ -64,7 +64,8 @@ const itemController = {
       // nest: true,
       include: [
         Category,
-        { model: Comment }
+        { model: Comment },
+        { model: User, as: 'FavoritedUsers' }
       ]
     })
       .then(item => {
@@ -99,6 +100,24 @@ const itemController = {
           comments
         })
       })
+  },
+  getTopItems: (req, res, next) => {
+    return Item.findAll({
+      // nest: true,
+      include: [
+        { model: User, as: 'FavoritedUsers' }
+      ]
+    })
+      .then(items => {
+        const result = items.map(item => ({
+          ...item.toJSON(),
+          favoriteCount: item.FavoritedUsers.length
+        }))
+          .sort((a, b) => b.favoriteCount - a.favoriteCount)
+          .slice(0, 10)
+        return res.render('top-items', { items: result })
+      })
+      .catch(err => next(err))
   }
 }
 module.exports = itemController

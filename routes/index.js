@@ -16,6 +16,7 @@ router.post('/signin', passport.authenticate('local', { failureRedirect: '/signi
 router.get('/logout', userController.logout)
 router.get('/items/:id/dashboard', itemController.getDashboard)
 router.get('/items/feeds', authenticated, itemController.getFeeds)
+router.get('/items/top', authenticated, itemController.getTopItems)
 router.get('/items/:id', authenticated, itemController.getItem)
 router.get('/items', authenticated, itemController.getItems)
 router.post('/comments', authenticated, commentController.postComment)
