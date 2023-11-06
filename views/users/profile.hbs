@@ -12,9 +12,46 @@
   </div>
 </div>
 
-<P class="mt-3">&raquo {{uniqueItems.length}}個我評論過的商品</P>
-{{#each uniqueItems}}
-  <a href="/items/{{this.id}}">
-  <img src="{{this.image}}" alt="image" style="max-width: 100px;">
-  </a>
-{{/each}}
+<div class="card mt-3">
+  <P class="card-header">&raquo {{uniqueItems.length}}個我評論過的商品</P>
+  <div class="card-body">
+    {{#each uniqueItems}}
+    <a href="/items/{{this.id}}">
+      <img src="{{this.image}}" alt="image" style="max-width: 100px;" class="mx-1 my-1">
+    </a>
+    {{/each}}
+  </div>
+</div>
+
+<div class="card mt-3">
+  <p class="card-header">&raquo {{someone.FavoritedItems.length}}個我收藏的商品</p>
+  <div class="card-body">
+    {{#each someone.FavoritedItems}}
+      <a href="/items/{{this.id}}">
+        <img src="{{this.image}} " alt="image" style="max-width: 100px;" class="mx-1 my-1">
+      </a>
+    {{/each}}
+  </div>
+</div>
+
+<div class="card mt-3">
+  <p class="card-header">&raquo {{someone.Followings.length}}個我追蹤的人 (followings)</p>
+  <div class="card-body">
+    {{#each someone.Followings}}
+    <a href="/users/{{this.id}}">
+      <img src="{{this.image}} " alt="image" style="max-width: 100px;" class="mx-1 my-1">
+    </a>
+    {{/each}}
+  </div>
+</div>
+
+<div class="card mt-3">
+  <p class="card-header">&raquo {{someone.Followers.length}}個追蹤我的人 (followers)</p>
+  <div class="card-body">
+    {{#each someone.Followers}}
+    <a href="/users/{{this.id}}">
+      <img src="{{this.image}} " alt="image" style="max-width: 100px;" class="mx-1 my-1">
+    </a>
+    {{/each}}
+  </div>
+</div>

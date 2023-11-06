@@ -42,13 +42,18 @@ const userController = {
   },
   getUser: (req, res, next) => {
     return User.findByPk(req.params.id, {
-      include: { model: Comment, include: Item }
+      include: [
+        { model: Comment, include: Item },
+        { model: Item, as: 'FavoritedItems' },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
     })
       .then(someone => {
         someone = someone.toJSON()
-        const items = someone.Comments
+        const comments = someone.Comments
         // console.log(items)
-        const ItemData = items.map(obj => obj.Item)
+        const ItemData = comments.map(obj => obj.Item)
         // console.log(ItemData)
         const uniqueItems = ItemData.filter((obj, index) => {
           return index === ItemData.findIndex(o => obj.name === o.name)
