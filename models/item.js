@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'itemId',
         as: 'FavoritedUsers'
       })
+      Item.belongsToMany(models.User, {
+        through: models.Cart,
+        foreignKey: 'itemId',
+        as: 'CartUsers'
+      })
     }
   }
   Item.init({
