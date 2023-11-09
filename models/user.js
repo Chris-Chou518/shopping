@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'CartItems'
       })
+      User.hasMany(models.Cart, { foreignKey: 'userId' })
       User.belongsToMany(models.User, {
         through: models.Followship,
         foreignKey: 'followingId',

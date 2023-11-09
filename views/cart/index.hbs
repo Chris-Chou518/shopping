@@ -1,0 +1,64 @@
+<h1>我的購物車</h1>
+<table class="table align-middle">
+  <thead class="table-warning thead-dark">
+    <tr>
+      <th scope="col-6">商品</th>
+      <th scope="col-2">價格</th>
+      <th scope="col-2">數量</th>
+      <th scope="col-2">總計</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each carts}}
+      <tr>
+        <th scope="row">
+          <a href="/items/{{this.Item.id}}">
+            <img src="{{this.Item.image}}" alt="image" width="100px">
+            <span style="color: black;">{{this.Item.name}}</span>
+          </a>
+          <span class="mx-3" style="color: gray">{{this.Item.Category.name}}系列</span>
+        </th>
+        <td>
+          NT$ {{this.Item.price}}
+        </td>
+        <td>
+          <form action="" method="post" style="display: contents;">
+            <input type="hidden" name="count" value="-">
+            <button style="border: none; border-radius: 50%; background: none; color:sienna; font-weight: bold;" type="submit">-</button>
+          </form>
+          {{this.count}}
+          <form action="" method="post" style="display: contents;">
+            <input type="hidden" name="count" value="+">
+            <button style="border: none; border-radius: 50%; background: none; color:blue; font-weight: bold; " type="submit">+</button>
+          </form>
+        </td>
+        <td>
+          NT$ {{this.totalPrice}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+<hr>
+<table class="table table-secondary" style="max-width: 500px; max-height: 300px;">
+  <tbody>
+    <tr>
+      <th>商品總金額</th>
+      <th>NT$ {{total}}</th>
+    </tr>
+    <tr>
+      <th>運費</th>
+      <th>NT$ {{fare}}</th>
+    </tr>
+    <tr>
+      <th style="color: orange;">總計</th>
+      <th>NT$ {{finalTotalPrice}}</th>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+

@@ -10,6 +10,13 @@
   <div class="col-md-8">
     <p>{{item.description}}</p>
     <hr>
+    <br>
+    <br>
+    <br>
+    <form action="/cart/{{item.id}}" method="post" style="display: inline;">
+      <input type="number" name="count" placeholder="數量" style=" width: 100px;" max="99" min="1">
+      <button class="btn btn-warning rounded-pill" type="submit">加入購物車</button>
+    </form>
     {{#if isFavorited}}
       <form action="/favorite/{{item.id}}?_method=delete" method="post" style="display: contents;">
         <button style="border: none; background: none; color: red;" type="submit">&hearts;</button>
@@ -19,7 +26,9 @@
         <button style="border: none; background: none;" type="submit">&hearts;</button>
       </form>
     {{/if}}
-    <a class="btn btn-outline-info" href="/items/{{item.id}}/dashboard">Dashboard</a>
+    <div style="display: inline;">
+      <a class="btn btn-outline-info float-end" href="/items/{{item.id}}/dashboard">Dashboard</a>
+    </div>
   </div>
 </div>
 {{!-- comment --}}
