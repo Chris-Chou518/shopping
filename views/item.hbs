@@ -13,8 +13,9 @@
     <br>
     <br>
     <br>
-    <form action="/cart/{{item.id}}" method="post" style="display: inline;">
+    <form action="/cart" method="post" style="display: inline;">
       <input type="number" name="count" placeholder="數量" style=" width: 100px;" max="99" min="1">
+      <input type="hidden" name="itemId" value="{{item.id}}">
       <button class="btn btn-warning rounded-pill" type="submit">加入購物車</button>
     </form>
     {{#if isFavorited}}

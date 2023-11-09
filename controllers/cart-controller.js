@@ -1,15 +1,15 @@
-const { Cart, User, Item, Category } = require('../models')
+const { Cart, Item, Category } = require('../models')
 const cartController = {
   getCart: (req, res, next) => {
-    return User.findByPk(req.user.id, {
+    return Cart.findAll({
+      where: { userId: req.user.id },
       include: [
-        { model: Cart, include: { model: Item, include: [Category] } }
+        { model: Item, include: [Category] }
       ]
     })
-      .then(user => {
-        user = user.toJSON()
-        const carts = user.Carts.map(cart => ({
-          ...cart,
+      .then(carts => {
+        carts = carts.map(cart => ({
+          ...cart.toJSON(),
           totalPrice: cart.Item.price * cart.count
         }))
         let total = 0
@@ -19,7 +19,6 @@ const cartController = {
         const fare = 80
         const finalTotalPrice = total + fare
         res.render('cart/index', {
-          user,
           carts,
           total,
           fare,
@@ -29,17 +28,40 @@ const cartController = {
       .catch(err => next(err))
   },
   addCart: (req, res, next) => {
-    const { itemId } = req.params
-    const { count } = req.body
+  //   const { itemId } = req.params
+  //   const { count } = req.body
+  //   if (!itemId) throw new Error('無此商品!!!')
+  //   return Cart.create({
+  //     userId: req.user.id,
+  //     itemId,
+  //     count
+  //   })
+  //     .then(cart => {
+  //       req.flash('success_messages', '成功加入購物車')
+  //       return res.redirect('back')
+  //     })
+  //     .catch(err => next(err))
+  // }
+    const { count, itemId } = req.body
     if (!itemId) throw new Error('無此商品!!!')
-    return Cart.create({
-      userId: req.user.id,
-      itemId,
-      count
+    return Cart.findOne({
+      where: { itemId }
     })
       .then(cart => {
-        req.flash('success_messages', '成功加入購物車')
-        return res.redirect('back')
+        if (!cart) {
+          return Cart.create({
+            userId: req.user.id,
+            itemId,
+            count
+          }).then(cart => {
+            req.flash('success_messages', '成功加入購物車')
+            return res.redirect('back')
+          })
+            .catch(err => next(err))
+        } else {
+          req.flash('error_messages', '已加入過購物車')
+          res.redirect('back')
+        }
       })
       .catch(err => next(err))
   }

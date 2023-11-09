@@ -4,8 +4,9 @@
     <tr>
       <th scope="col-6">商品</th>
       <th scope="col-2">價格</th>
-      <th scope="col-2">數量</th>
+      <th scope="col-1">數量</th>
       <th scope="col-2">總計</th>
+      <th scope="col-1">刪除</th>
     </tr>
   </thead>
   <tbody>
@@ -22,18 +23,15 @@
           NT$ {{this.Item.price}}
         </td>
         <td>
-          <form action="" method="post" style="display: contents;">
-            <input type="hidden" name="count" value="-">
-            <button style="border: none; border-radius: 50%; background: none; color:sienna; font-weight: bold;" type="submit">-</button>
-          </form>
           {{this.count}}
-          <form action="" method="post" style="display: contents;">
-            <input type="hidden" name="count" value="+">
-            <button style="border: none; border-radius: 50%; background: none; color:blue; font-weight: bold; " type="submit">+</button>
-          </form>
         </td>
         <td>
           NT$ {{this.totalPrice}}
+        </td>
+        <td>
+          <form action="/cart/{{this.id}}?_method=delete" method="post">
+            <button type="submit">Delete</button>
+          </form>
         </td>
       </tr>
     {{/each}}
@@ -56,9 +54,3 @@
     </tr>
   </tbody>
 </table>
-
-
-
-
-
-

@@ -31,7 +31,7 @@ router.delete('/favorite/:itemId', authenticated, userController.removeFavorite)
 router.post('/following/:userId', authenticated, userController.addFollowing)
 router.delete('/following/:userId', authenticated, userController.removeFollowing)
 router.get('/cart', authenticated, cartController.getCart)
-router.post('/cart/:itemId', authenticated, cartController.addCart)
+router.post('/cart', authenticated, cartController.addCart)
 router.use('/', (req, res) => res.redirect('/items'))
 router.use('/', generalErrorHandler)
 module.exports = router
