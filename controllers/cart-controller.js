@@ -64,6 +64,18 @@ const cartController = {
         }
       })
       .catch(err => next(err))
+  },
+  deleteCart: (req, res, next) => {
+    return Cart.findByPk(req.params.id)
+      .then(cart => {
+        if (!cart) throw new Error('購物車內沒有此商品！！！')
+        return cart.destroy()
+      })
+      .then(() => res.redirect('/cart'))
+      .catch(err => {
+        console.log(err)
+        next(err)
+      })
   }
 }
 module.exports = cartController
