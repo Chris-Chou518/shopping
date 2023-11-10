@@ -28,20 +28,6 @@ const cartController = {
       .catch(err => next(err))
   },
   addCart: (req, res, next) => {
-  //   const { itemId } = req.params
-  //   const { count } = req.body
-  //   if (!itemId) throw new Error('無此商品!!!')
-  //   return Cart.create({
-  //     userId: req.user.id,
-  //     itemId,
-  //     count
-  //   })
-  //     .then(cart => {
-  //       req.flash('success_messages', '成功加入購物車')
-  //       return res.redirect('back')
-  //     })
-  //     .catch(err => next(err))
-  // }
     const { count, itemId } = req.body
     if (!itemId) throw new Error('無此商品!!!')
     return Cart.findOne({
@@ -76,6 +62,19 @@ const cartController = {
         console.log(err)
         next(err)
       })
+  },
+  patchCart: (req, res, next) => {
+    return Cart.findByPk(req.params.id)
+      .then(cart => {
+        if (!cart) throw new Error('購物車沒有此商品!!!')
+        return cart.update({
+          count: req.body.count
+        })
+      })
+      .then(() => {
+        res.redirect('/cart')
+      })
+      .catch(err => next(err))
   }
 }
 module.exports = cartController

@@ -23,14 +23,17 @@
           NT$ {{this.Item.price}}
         </td>
         <td>
-          {{this.count}}
+          <form action="/cart/{{this.id}}?_method=patch" method="post" >
+            <input type="number" name="count" value="{{this.count}}" style="max-width: 50px;" max="99" min="1">
+            <button type="submit">確認</button>
+          </form>
         </td>
         <td>
           NT$ {{this.totalPrice}}
         </td>
         <td>
           <form action="/cart/{{this.id}}?_method=delete" method="post">
-            <button type="submit">Delete</button>
+            <button class="btn btn-outline-danger" type="submit" onclick="return confirm(`確定要刪除 {{ this.Item.name }}？`)">Delete</button>
           </form>
         </td>
       </tr>

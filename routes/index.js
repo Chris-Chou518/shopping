@@ -33,6 +33,7 @@ router.delete('/following/:userId', authenticated, userController.removeFollowin
 router.get('/cart', authenticated, cartController.getCart)
 router.post('/cart', authenticated, cartController.addCart)
 router.delete('/cart/:id', authenticated, cartController.deleteCart)
+router.patch('/cart/:id', authenticated, cartController.patchCart)
 router.use('/', (req, res) => res.redirect('/items'))
 router.use('/', generalErrorHandler)
 module.exports = router
