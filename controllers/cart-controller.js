@@ -1,13 +1,21 @@
-const { Cart, Item, Category } = require('../models')
+const { Cart, Item, Category, Coupon } = require('../models')
 const cartController = {
   getCart: (req, res, next) => {
-    return Cart.findAll({
-      where: { userId: req.user.id },
-      include: [
-        { model: Item, include: [Category] }
-      ]
-    })
-      .then(carts => {
+    const defaultCode = 'please enter discount!!'
+    const code = req.query.code || defaultCode
+    return Promise.all([
+      Cart.findAll({
+        where: { userId: req.user.id },
+        include: [
+          { model: Item, include: [Category] }
+        ]
+      }),
+      Coupon.findOne({
+        where: { code: code },
+        raw: true
+      })
+    ])
+      .then(([carts, coupon]) => {
         carts = carts.map(cart => ({
           ...cart.toJSON(),
           totalPrice: cart.Item.price * cart.count
@@ -17,12 +25,15 @@ const cartController = {
           total += carts[i].totalPrice
         }
         const fare = 80
-        const finalTotalPrice = total + fare
+        const discount = (coupon.discount * 0.01) || 1
+        const totalWithDiscount = parseInt(total * discount)
+        const finalTotalPrice = totalWithDiscount + fare
         res.render('cart/index', {
           carts,
-          total,
+          totalWithDiscount,
           fare,
-          finalTotalPrice
+          finalTotalPrice,
+          code
         })
       })
       .catch(err => next(err))
@@ -73,6 +84,22 @@ const cartController = {
       })
       .then(() => {
         res.redirect('/cart')
+      })
+      .catch(err => next(err))
+  },
+  getCouponPage: (req, res) => {
+    res.render('cart/coupon')
+  },
+  getCoupon: (req, res, next) => {
+    let couponLength
+    return Coupon.findAll()
+      .then(coupons => {
+        couponLength = coupons.length
+        const randomNumber = Math.floor(Math.random() * couponLength) + 1
+        return Coupon.findByPk(randomNumber)
+      })
+      .then(coupon => {
+        res.render('cart/hadCoupon', { coupon: coupon.toJSON() })
       })
       .catch(err => next(err))
   }
