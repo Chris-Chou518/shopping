@@ -33,7 +33,9 @@ const cartController = {
           totalWithDiscount,
           fare,
           finalTotalPrice,
-          code
+          code,
+          discount,
+          total
         })
       })
       .catch(err => next(err))
@@ -42,7 +44,7 @@ const cartController = {
     const { count, itemId } = req.body
     if (!itemId) throw new Error('無此商品!!!')
     return Cart.findOne({
-      where: { itemId }
+      where: { itemId, userId: req.user.id }
     })
       .then(cart => {
         if (!cart) {
@@ -95,7 +97,7 @@ const cartController = {
     return Coupon.findAll()
       .then(coupons => {
         couponLength = coupons.length
-        const randomNumber = Math.floor(Math.random() * couponLength) + 1
+        const randomNumber = coupons[Math.floor(Math.random() * couponLength)].id
         return Coupon.findByPk(randomNumber)
       })
       .then(coupon => {
