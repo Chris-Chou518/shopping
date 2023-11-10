@@ -1,0 +1,36 @@
+{{> admin-tab-switch route='coupons'}}
+<a href="/admin/coupons/create">
+  <button class="btn btn-primary">新增折扣碼</button>
+</a>
+<br />
+<br />
+<table class="table align-middle">
+  <thead class="table-info thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Code</th>
+      <th scope="col">Text</th>
+      <th scope="col">Discount</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each coupons}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.code}}</td>
+      <td>{{this.text}}</td>
+      <td>{{this.discount}}</td>
+      <td>
+        <button type="button" class="btn btn-light text-primary">
+          <a href="/admin/coupons/{{this.id}}/edit">Edit</a>
+        </button>
+        <form action="/admin/coupons/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-light text-danger"
+            onclick="return confirm(`確定要刪除 {{ this.code }} 嗎？`)">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

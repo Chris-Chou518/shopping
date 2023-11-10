@@ -1,4 +1,4 @@
-const { Item, User, Category } = require('../models')
+const { Item, User, Category, Coupon } = require('../models')
 const { localFileHandler } = require('../helpers/file-helpers')
 const adminController = {
   getItems: (req, res, next) => {
@@ -119,6 +119,73 @@ const adminController = {
       .then(() => {
         req.flash('success_messages', '使用者權限變更成功')
         res.redirect('/admin/users')
+      })
+      .catch(err => next(err))
+  },
+  getCoupons: (req, res, next) => {
+    return Coupon.findAll({ raw: true })
+      .then(coupons => {
+        res.render('admin/coupons', { coupons })
+      })
+      .catch(err => next(err))
+  },
+  createCoupon: (req, res) => {
+    res.render('admin/create-coupon')
+  },
+  editCoupon: (req, res, next) => {
+    return Coupon.findByPk(req.params.id, { raw: true })
+      .then(coupon => {
+        return res.render('admin/edit-coupon', { coupon })
+      })
+      .catch(err => next(err))
+  },
+  postCoupon: (req, res, next) => {
+    const { code, text, discount } = req.body
+    return Coupon.findOne({
+      where: { code }
+    })
+      .then(coupon => {
+        if (coupon) throw new Error('已經新增過此折扣碼!')
+        return Coupon.create({
+          code,
+          text,
+          discount
+        })
+      })
+      .then(coupon => {
+        req.flash('success_messages', '新增折扣碼成功')
+        return res.redirect('/admin/coupons')
+      })
+      .catch(err => next(err))
+  },
+  putCoupon: (req, res, next) => {
+    const { code, text, discount } = req.body
+    return Coupon.findByPk(req.params.id)
+      .then(coupon => {
+        if (coupon.code === 'please enter discount!!') throw new Error('這是預設折扣碼，不能編輯!!!')
+        if (!coupon) throw new Error('沒有此折扣碼!!!')
+        return coupon.update({
+          code,
+          text,
+          discount
+        })
+      })
+      .then(updatedCoupon => {
+        req.flash('success_messages', '編輯折扣碼成功')
+        return res.redirect('/admin/coupons')
+      })
+      .catch(err => next(err))
+  },
+  deleteCoupon: (req, res, next) => {
+    return Coupon.findByPk(req.params.id)
+      .then(coupon => {
+        if (coupon.code === 'please enter discount!!') throw new Error('這是預設折扣碼，不能刪除!!!')
+        if (!coupon) throw new Error('沒有此折扣碼!!!')
+        return coupon.destroy()
+      })
+      .then(deletedCoupon => {
+        req.flash('success_messages', '成功刪除折扣碼')
+        return res.redirect('/admin/coupons')
       })
       .catch(err => next(err))
   }
