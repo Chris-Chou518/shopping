@@ -13,9 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.1",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.10.6",
+    "dotenv": "^16.3.1",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.23.4",

@@ -1,0 +1,7 @@
+<h1>確認總金額無誤</h1>
+<p>總共花費NT$ {{finalTotalPrice}}元</p>
+<form action="/createOrder/{{order.orderId}}" method="post">
+  <input type="hidden" name="finalTotalPrice" value="{{finalTotalPrice}}">
+  <input type="hidden" name="orderId" value="{{order.orderId}}">
+  <button class="btn btn-warning" type="submit">結帳</button>
+</form>

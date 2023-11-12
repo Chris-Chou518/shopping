@@ -41,11 +41,24 @@
   </tbody>
 </table>
 <hr>
+<form action="/cart" method="get">
+  <label for="code">輸入優惠碼： </label>
+  <input type="text" name="code" id="code" value="{{code}}" placeholder="輸入折扣碼">
+  <button type="submit">確認</button>
+</form>
 <table class="table table-secondary" style="max-width: 500px; max-height: 300px;">
   <tbody>
     <tr>
       <th>商品總金額</th>
-      <th>NT$ {{total}}</th>
+      <th>
+        {{#ifCond discount 1}}
+          NT$ {{totalWithDiscount}}
+        {{else}}
+          <del style="color: gray;">NT$ {{total}}</del>
+          NT$ {{totalWithDiscount}}
+        {{/ifCond}}
+        
+      </th>
     </tr>
     <tr>
       <th>運費</th>
@@ -57,3 +70,7 @@
     </tr>
   </tbody>
 </table>
+<form action="/checkout" method="get">
+  <input type="hidden" name="finalTotalPrice" value="{{finalTotalPrice}}">
+  <button class="btn btn-warning" type="submit">結帳</button>
+</form>
