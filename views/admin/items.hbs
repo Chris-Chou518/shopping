@@ -19,7 +19,13 @@
       <tr>
         <th scope="row">{{this.id}}</th>
         <td>{{this.name}}</td>
-        <td>{{this.Category.name}}</td>
+        <td>
+          {{#ifCond this.Category.id null}}
+            <p style="color:darkred;">此欄位還沒被分類唷!</p>  
+          {{else}}
+            {{this.Category.name}}
+          {{/ifCond}}
+        </td>
         <td>{{this.price}}</td>
         <td>
           <button type="button" class="btn btn-light text-primary">

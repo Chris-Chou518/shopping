@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      Item.belongsTo(models.Category, { foreignKey: 'categoryId' })
+      Item.belongsTo(models.Category, {
+        foreignKey: 'categoryId',
+        onDelete: 'SET NULL'
+      })
       Item.hasMany(models.Comment, { foreignKey: 'itemId' })
       Item.belongsToMany(models.User, {
         through: models.Favorite,

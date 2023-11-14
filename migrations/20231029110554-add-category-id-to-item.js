@@ -5,7 +5,8 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.addColumn('Items', 'category_id', {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      // allowNull: false,
+      onDelete: 'SET NULL',
       references: {
         model: 'Categories',
         key: 'id'

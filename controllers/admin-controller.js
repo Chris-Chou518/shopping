@@ -87,13 +87,15 @@ const adminController = {
   deleteItem: (req, res, next) => {
     return Item.findByPk(req.params.id)
       .then(item => {
-        if (!item) return new Error("Item didn't exist")
+        if (!item) throw new Error("Item didn't exist")
         return item.destroy()
       })
       .then(() => {
         res.redirect('/admin/items')
       })
-      .catch(err => next(err))
+      .catch(err => {
+        next(err)
+      })
   },
   getUsers: (req, res, next) => {
     return User.findAll({

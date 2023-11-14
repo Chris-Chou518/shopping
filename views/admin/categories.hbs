@@ -44,7 +44,7 @@
         </td>
         <td>
           <form action="/admin/categories/{{this.id}}?_method=delete" method="post">
-            <button class="btn btn-light text-danger" type="submit" onclick="return confirm(`確定要刪除 {{ this.name }} 嗎？`)">Delete</button>
+            <button class="btn btn-light text-danger" type="submit" onclick="return confirm(`刪除分類會使部分商品分類變成待分類，確定要刪除 {{ this.name }} 這個分類嗎？`)">Delete</button>
           </form>
         </td>
       </tr>
