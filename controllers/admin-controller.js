@@ -1,5 +1,5 @@
 const { Item, User, Category, Coupon } = require('../models')
-const { localFileHandler } = require('../helpers/file-helpers')
+const { s3FileHandler } = require('../helpers/file-helpers')
 const adminController = {
   getItems: (req, res, next) => {
     Item.findAll({
@@ -21,7 +21,7 @@ const adminController = {
     const { name, description, price, categoryId } = req.body
     if (!name) throw new Error('Item name is required')
     const file = req.file
-    localFileHandler(file)
+    s3FileHandler(file)
       .then(filePath => {
         return Item.create({
           name,
@@ -66,7 +66,7 @@ const adminController = {
     const { file } = req
     Promise.all([
       Item.findByPk(req.params.id),
-      localFileHandler(file)
+      s3FileHandler(file)
     ])
       .then(([item, filePath]) => {
         if (!item) return new Error("Item didn't exist")

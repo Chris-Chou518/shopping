@@ -16,12 +16,12 @@
     <div class="col-md-3 mb-3">
       <div class="card mb-1 shadow-sm">
         <a href="/items/{{this.id}}">
-          <img class="card-img-top img-fluid" src="{{this.image}}" alt="card-img-cap" width="286px" height="180px">
+          <img class="card-img-top img-fluid" src="{{this.image}}" alt="card-img-cap"  width="320" height="240">
         </a>
       </div>
       <div class="card-body">
         <p class="card-text">
-          <a class="text-body-secondary" href="/items/:id">
+          <a class="text-body-secondary" href="/items/{{this.id}}">
             {{this.name}}
           </a>
           <span class="float-end">NT$: {{this.price}}</span>

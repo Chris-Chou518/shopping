@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const { User, Comment, Item, Favorite, Followship } = require('../models')
-const { localFileHandler } = require('../helpers/file-helpers')
+const { s3FileHandler } = require('../helpers/file-helpers')
 const userController = {
   signUpPage: (req, res) => {
     return res.render('signup')
@@ -72,7 +72,7 @@ const userController = {
     const file = req.file
     return Promise.all([
       User.findByPk(req.user.id),
-      localFileHandler(file)
+      s3FileHandler(file)
     ])
       .then(([user, filePath]) => {
         return user.update({
